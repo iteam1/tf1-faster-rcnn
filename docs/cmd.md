@@ -13,8 +13,17 @@
 
 - Create train data: `python scripts/xml_to_csv.py -i dataset/val -o dataset/val_labels.csv`
 
-- Create train data:
+- Create training tfrecord: `python scripts/generate_tfrecord.py --csv_input=dataset/train_labels.csv  --output_path=dataset/train.record  --image_dir=dataset/train_img`
 
-        python scripts/generate_tfrecord.py --csv_input=dataset/train_labels.csv \
-        --output_path=dataset/train.record \
-        --image_dir=dataset/train_img
+- Create validation tfrecord: `python scripts/generate_tfrecord.py --csv_input=dataset/val_labels.csv  --output_path=dataset/val.record  --image_dir=dataset/val_img`
+
+*Note* Edit label from `scripts/generate_tfrecord.py`
+
+        # TO-DO replace this with label map
+        def class_text_to_int(row_label):
+        if row_label == 'red_strawberry':
+                return 1
+        elif row_label == 'green_strawberry':
+                return 2
+        else:
+                None

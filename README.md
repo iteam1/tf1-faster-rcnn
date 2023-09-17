@@ -3,6 +3,8 @@ train faster-rcnn tensorflow v1
 
 # references
 
-https://github.com/Tony607/object_detection_demo/tree/master
+https://github.com/tensorflow/models/tree/master/research/object_detection/g3doc
+
+https://github.com/datitran/raccoon_dataset
 
 https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/tensorflow-1.14/

@@ -2,9 +2,10 @@
 Usage:
   # From tensorflow/models/
   # Create train data:
-  python generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=train.record
+  python scripts/generate_tfrecord.py --csv_input=dataset/train_labels.csv  --output_path=dataset/train.record  --image_dir=dataset/train_img
+
   # Create test data:
-  python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=test.record
+  python scripts/generate_tfrecord.py --csv_input=dataset/val_labels.csv  --output_path=dataset/val.record  --image_dir=dataset/val_img
 """
 from __future__ import division
 from __future__ import print_function
@@ -12,7 +13,6 @@ from __future__ import absolute_import
 
 import os
 import io
-import sys
 import pandas as pd
 import tensorflow as tf
 
@@ -29,14 +29,13 @@ FLAGS = flags.FLAGS
 
 # TO-DO replace this with label map
 def class_text_to_int(row_label):
-    if row_label == 'class_one_name':
+    if row_label == 'red_strawberry':
         return 1
-    if row_label == 'class_two_name':
+    elif row_label == 'green_strawberry':
         return 2
-    if row_label == 'class_three_name':
-        return 3
     else:
         None
+
 
 def split(df, group):
     data = namedtuple('data', ['filename', 'object'])
@@ -49,11 +48,9 @@ def create_tf_example(group, path):
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
     image = Image.open(encoded_jpg_io)
-
     width, height = image.size
 
     filename = group.filename.encode('utf8')
-    print(filename)
     image_format = b'jpg'
     xmins = []
     xmaxs = []
@@ -92,25 +89,11 @@ def main(_):
     path = os.path.join(FLAGS.image_dir)
     examples = pd.read_csv(FLAGS.csv_input)
     grouped = split(examples, 'filename')
-
-    # added
-    file_errors = 0
-
     for group in grouped:
-        try:
-            tf_example = create_tf_example(group, path)
-            writer.write(tf_example.SerializeToString())
-        except:
-
-            # added
-            file_errors +=1
-            pass
+        tf_example = create_tf_example(group, path)
+        writer.write(tf_example.SerializeToString())
 
     writer.close()
-
-    # added
-    print("FINISHED. There were %d errors" %file_errors)
-
     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
     print('Successfully created the TFRecords: {}'.format(output_path))
 
