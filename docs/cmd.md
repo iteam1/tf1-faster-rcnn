@@ -27,3 +27,5 @@
                 return 2
         else:
                 None
+
+- visualize tfrecord `CUDA_VISIBLE_DEVICES=1 python scripts/visualize_tfrecord.py dataset/train.record dataset/labelmap.pbtxt`
