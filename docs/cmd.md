@@ -29,3 +29,7 @@
                 None
 
 - visualize tfrecord `CUDA_VISIBLE_DEVICES=1 python scripts/visualize_tfrecord.py dataset/train.record dataset/labelmap.pbtxt`
+
+- export `PYTHONPATH`: `export PYTHONPATH="/mrcnn/models/research" && export PYTHONPATH="/mrcnn/models/research/slim"`
+
+- train model: `CUDA_VISIBLE_DEVICES=1 python models/research/object_detection/model_main.py --alsologtostderr --model_dir=training/ --pipeline_config_path=dataset/pipeline.config`
